@@ -23,7 +23,9 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros extends \Elementor\Core\Dynamic
 			\Elementor\Modules\DynamicTags\Module::URL_CATEGORY,
 			\Elementor\Modules\DynamicTags\Module::POST_META_CATEGORY,
 			\Elementor\Modules\DynamicTags\Module::NUMBER_CATEGORY,
-			\Elementor\Modules\DynamicTags\Module::COLOR_CATEGORY
+			\Elementor\Modules\DynamicTags\Module::COLOR_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::MEDIA_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::IMAGE_CATEGORY,
 		];
 	}
 
