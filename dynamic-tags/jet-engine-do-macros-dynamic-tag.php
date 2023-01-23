@@ -51,6 +51,7 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros extends \Elementor\Core\Dynamic
 		$sanitize_output = $this->get_settings( 'sanitize_output' );
 
 		$result = jet_engine()->listings->macros->do_macros( $macros_string );
+		$result = do_shortcode( $result );
 
 		if ( isset( $sanitize_output ) && 'yes' == $sanitize_output ) {
 			$result = wp_kses_post( $result );
