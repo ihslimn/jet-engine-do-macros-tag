@@ -37,6 +37,7 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image extends \Elementor\Core\D
 		$macros_string   = $this->get_settings( 'macros_string' );
 
 		$result = jet_engine()->listings->macros->do_macros( $macros_string );
+		$result = do_shortcode( $result );
 
 		$result = \Jet_Engine_Tools::get_attachment_image_data_array( $result );
 
