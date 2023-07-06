@@ -56,7 +56,7 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros extends \Elementor\Core\Dynamic
 	public function render() {
 		$macros_string   = $this->get_settings( 'macros_string' );
 		$sanitize_output = $this->get_settings( 'sanitize_output' );
-		$strip_tags      = $this->get_settings( 'sanitize_output' );
+		$strip_tags      = $this->get_settings( 'strip_tags' );
 
 		$result = jet_engine()->listings->macros->do_macros( $macros_string );
 		$result = do_shortcode( $result );
