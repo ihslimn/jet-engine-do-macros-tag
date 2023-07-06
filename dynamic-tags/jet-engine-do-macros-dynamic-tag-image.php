@@ -10,7 +10,7 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image extends \Elementor\Core\D
 	}
 
 	public function get_title() {
-		return 'Do Macros - Image';
+		return 'Do Macros - Data';
 	}
 
 	public function get_group() {
@@ -19,7 +19,13 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image extends \Elementor\Core\D
 
 	public function get_categories() {
 		return [ 
-			\Elementor\Modules\DynamicTags\Module::IMAGE_CATEGORY
+			\Elementor\Modules\DynamicTags\Module::TEXT_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::URL_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::POST_META_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::NUMBER_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::COLOR_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::MEDIA_CATEGORY,
+			\Elementor\Modules\DynamicTags\Module::IMAGE_CATEGORY,
 		];
 	}
 
@@ -31,15 +37,37 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image extends \Elementor\Core\D
 				'label' => 'Macros string',
 			]
 		);
+		$this->add_control(
+			'strip_tags',
+			[
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label' => 'Strip tags',
+			]
+		);
+		$this->add_control(
+			'is_image',
+			[
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label' => 'Is image',
+			]
+		);
 	}
 
 	public function get_value( array $options = array() ) {
-		$macros_string   = $this->get_settings( 'macros_string' );
+		$macros_string = $this->get_settings( 'macros_string' );
+		$strip_tags    = $this->get_settings( 'strip_tags' );
+		$is_image      = $this->get_settings( 'is_image' );
 
 		$result = jet_engine()->listings->macros->do_macros( $macros_string );
 		$result = do_shortcode( $result );
 
-		$result = \Jet_Engine_Tools::get_attachment_image_data_array( $result );
+		if ( isset( $strip_tags ) && 'yes' == $strip_tags ) {
+			$result = wp_strip_all_tags( $result );
+		}
+
+		if ( $is_image ) {
+			$result = \Jet_Engine_Tools::get_attachment_image_data_array( $result );
+		}
 
 		return $result;
 	}
