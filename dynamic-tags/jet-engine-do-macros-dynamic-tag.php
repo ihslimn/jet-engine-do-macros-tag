@@ -44,17 +44,29 @@ Class Elementor_Dynamic_Tag_Jet_Engine_Do_Macros extends \Elementor\Core\Dynamic
 				'label' => 'Sanitize output',
 			]
 		);
+		$this->add_control(
+			'strip_tags',
+			[
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label' => 'Strip tags',
+			]
+		);
 	}
 
 	public function render() {
 		$macros_string   = $this->get_settings( 'macros_string' );
 		$sanitize_output = $this->get_settings( 'sanitize_output' );
+		$strip_tags      = $this->get_settings( 'sanitize_output' );
 
 		$result = jet_engine()->listings->macros->do_macros( $macros_string );
 		$result = do_shortcode( $result );
 
 		if ( isset( $sanitize_output ) && 'yes' == $sanitize_output ) {
 			$result = wp_kses_post( $result );
+		}
+
+		if ( isset( $strip_tags ) && 'yes' == $strip_tags ) {
+			$result = wp_strip_all_tags( $result );
 		}
 
 		echo $result;
