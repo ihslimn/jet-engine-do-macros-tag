@@ -17,8 +17,21 @@ if ( ! class_exists( 'Do_Macros_Tag' ) ) {
 	
 	class Do_Macros_Tag {
 
+		private $new_elementor = false;
+
 		public function __construct() {
-			add_action( 'elementor/dynamic_tags/register_tags', array( $this, 'register_dynamic_tag' ) );
+			add_action( 'plugins_loaded', array( $this, 'add_hooks' ) );
+		}
+
+		public function add_hooks() {
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				$this->new_elementor = true;
+				add_action( 'elementor/dynamic_tags/register', array( $this, 'register_dynamic_tag' ) );
+			} else {
+				add_action( 'elementor/dynamic_tags/register_tags', array( $this, 'register_dynamic_tag' ) );
+			}
+
 		}
 
 		public function register_dynamic_tag( $dynamic_tags ) {
@@ -32,6 +45,14 @@ if ( ! class_exists( 'Do_Macros_Tag' ) ) {
 
 			$dynamic_tags->register_tag( 'Elementor_Dynamic_Tag_Jet_Engine_Do_Macros' );
 			$dynamic_tags->register_tag( 'Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image' );
+
+			if ( $this->new_elementor ) {
+				$dynamic_tags->register( new Elementor_Dynamic_Tag_Jet_Engine_Do_Macros() );
+				$dynamic_tags->register( new Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image() );
+			} else {
+				$dynamic_tags->register_tag( 'Elementor_Dynamic_Tag_Jet_Engine_Do_Macros' );
+				$dynamic_tags->register_tag( 'Elementor_Dynamic_Tag_Jet_Engine_Do_Macros_Image' );
+			}
 
 		}
 
